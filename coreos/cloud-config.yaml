@@ -1,0 +1,33 @@
+#cloud-config
+hostname: coreos01.okooo.cn
+manage_etc_hosts: localhost
+coreos:
+  etcd:
+    discovery: https://discovery.etcd.io/fac66b9220156c687f6e31e2bcd419db
+    addr: 192.168.7.121:4001
+    peer-addr: 192.168.7.121:7001
+  units:
+    - name: etcd.service
+      command: start
+    - name: fleet.service
+      command: start
+    - name: systemd-networkd.service
+      command: start
+write_files:
+    - path: /etc/systemd/network/static.network
+      permissions: 0644
+      content: |
+        [Match]
+        Name=ens32
+
+        [Network]
+        Address=192.168.7.121/16
+        Gateway=192.168.8.1
+        DNS=192.168.8.15
+users:
+  - name: core
+    ssh-authorized-keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEAzkVpS0jYjMTc8LXEsAUWqWyvesTwGeGEhCLglQdkYLQJgkAjDHbtIJVhe01yddVsucXV7bS3mIoI/Eoy+uccnJ/yB+Z44S9X5AxbYBDv0F/vH8vWs3rHNrGjeejFFDkksHW0TZBIpFYNovAiTY5raip0cWQDYH1KsklvlEcr3cE=
+  - groups:
+      - sudo
+      - docker
