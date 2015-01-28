@@ -3,7 +3,7 @@ hostname: coreos01.okooo.cn
 manage_etc_hosts: localhost
 coreos:
   etcd:
-    discovery: https://discovery.etcd.io/fac66b9220156c687f6e31e2bcd419db
+    discovery: https://discovery.etcd.io/782f814c8645f72a81af5c2f5e4f8772
     addr: 192.168.7.121:4001
     peer-addr: 192.168.7.121:7001
   units:
