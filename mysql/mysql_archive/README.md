@@ -1,4 +1,4 @@
-利用pt-archive工具进行mysql归档的shell脚本!
+利用pt-archive工具进行mysql归档的shell脚本
 ===================
 
 
@@ -31,10 +31,12 @@ mysql的备份策略应该从两方面考虑，本脚本主要进行归档工作
 
 语句
 
+```
 time pt-archiver --set-vars='set session sql_log_bin=0' \
 --source h=ip,p=passwd,P=port,u=user,D=database,t=table \
 --dest h=ip,p=passwd,P=port,u=user,D=del_bak,t=table \
 --where "id <= xxxxx" --limit 10000 --commit-each --no-check-charset --progress=10000 --statistics
+```
 
 ### 主从全清
 
@@ -42,7 +44,9 @@ time pt-archiver --set-vars='set session sql_log_bin=0' \
 
 语句
 
+```
 pt-archiver --source h=ip,u=user,p=passwd,D=database,t=table --where 'id < xxxx' --limit 10000 --commit-each --statistics --progress=10000 --purge --no-check-charset
+```
 
 ### 执行计划
 

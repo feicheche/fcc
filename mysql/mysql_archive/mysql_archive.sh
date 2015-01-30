@@ -16,7 +16,7 @@ while read line
 do
 read InstanceName InstanceIP InstancePort DbName TableName KeyId KeyTime<<< $(echo $line|awk '{print $1,$2,$3,$4,$5,$6,$7}')
 
-	if [ $TableName = "bet_match_belong" ] || [ $TableName = "wager_bet_match_belong" ];then
+	if [ $TableName = "table1" ] || [ $TableName = "wager_bet_match_belong" ];then
 		echo "`date +"%Y-%m-%d %T"` $InstanceName start"
 		sleep 1
 		keyid=`mysql -h$InstanceIP -u$user -p$passwd --port=$InstancePort \
@@ -26,14 +26,14 @@ read InstanceName InstanceIP InstancePort DbName TableName KeyId KeyTime<<< $(ec
 		--commit-each --no-check-charset --progress=10000 --statistics >> $logfile 2>&1
 		sleep 1
 		echo "`date +"%Y-%m-%d %T"` $InstanceName complete!"
-	elif [ $TableName = "score_freeze" ] || [ $TableName = "FreezeDetail" ]; then
+	elif [ $TableName = "table2" ] || [ $TableName = "FreezeDetail" ]; then
 		echo "`date +"%Y-%m-%d %T"` $InstanceName start"
 		sleep 1
 		time pt-archiver --source h=$InstanceIP,p=$passwd,P=$InstancePort,u=$user,D=$DbName,t=$TableName \
 		--where "$KeyId = 'Y'" --limit 10000 --commit-each --purge --no-check-charset --progress=10000 --statistics >> $logfile 2>&1
 		sleep 1
 		echo "`date +"%Y-%m-%d %T"` $InstanceName complete!"
-	elif [ $TableName = "app_active" ]; then
+	elif [ $TableName = "table3" ]; then
 		echo "`date +"%Y-%m-%d %T"` $InstanceName start"
 		sleep 1
 		keyid=`mysql -h$InstanceIP -u$user -p$passwd --port=$InstancePort \
@@ -55,4 +55,4 @@ read InstanceName InstanceIP InstancePort DbName TableName KeyId KeyTime<<< $(ec
 		echo "`date +"%Y-%m-%d %T"` $InstanceName complete!"
 	fi
 
-done < /root/bin/mysql_archive/config/archive.conf
+done < ./archive.conf
