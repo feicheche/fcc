@@ -1,0 +1,55 @@
+  [server default]
+  # mysql user and password
+  user=xxx
+  password=xxx
+  ssh_user=root
+  repl_user=okooo_rep
+  repl_password=xxx
+  ping_interval=2
+  master_ip_failover_script=/usr/local/bin/master_ip_failover_p01
+  # master_ip_online_change_script=/usr/local/bin/master_ip_online_change_script
+  # working directory on the manager
+  manager_workdir=/var/log/masterha/app1
+  manager_log=/var/log/masterha/manager1.log
+  # working directory on MySQL servers
+  # remote_workdir=/var/log/masterha/app1
+
+  [server1]
+  hostname=tm01
+  ssh_port=9922
+  port=3301
+  master_binlog_dir=/data/trade_master_p01/logs
+  check_repl_delay=0
+  candidate_master=1
+
+  [server2]
+  hostname=venus01
+  ssh_port=9922
+  port=3301
+  master_binlog_dir=/data/trade_master_p01/logs
+  check_repl_delay=0
+  candidate_master=1
+
+  [server3]
+  hostname=tdb11
+  ssh_port=9922
+  port=3301
+  master_binlog_dir=/data/trade_slave_p01/logs
+  no_master=1
+  ignore_fail=1
+
+  [server4]
+  hostname=tdb15
+  ssh_port=9922
+  port=3301
+  master_binlog_dir=/data/trade_slave_p01/logs
+  no_master=1
+  ignore_fail=1
+
+  [server5]
+  hostname=ts01
+  ssh_port=9922
+  port=3301
+  master_binlog_dir=/data/trade_slave_p01/logs
+  no_master=1
+  ignore_fail=1
