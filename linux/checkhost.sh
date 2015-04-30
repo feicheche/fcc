@@ -24,10 +24,10 @@ function RunCMD()
 		#IP=`grep -w $host /etc/hosts | awk '{print $1}'`
 		IP=`dig -t A  ${host}.okooo.cn | grep ^${host} | awk '{print $5}'`
 		if [ "$IP" != "" ];then
-	    echo -e "\n\e[1;33m===================\e[0m \e[1;32mServer:\e[0m \e[1;31m$host \e[0m| \e[1;32mIP:\e[0m \e[1;31m$IP\e[0m \e[1;33m===================\e[0m"
-	    /usr/bin/ssh $host "$2"
+	    	echo -e "\n\e[1;33m===================\e[0m \e[1;32mServer:\e[0m \e[1;31m$host \e[0m| \e[1;32mIP:\e[0m \e[1;31m$IP\e[0m \e[1;33m===================\e[0m"
+	    	/usr/bin/ssh $host "$2"
 	    else
-	    echo -e "\n\e[1;33m===================\e[0m \e[1;32mServer:\e[0m \e[1;31m$host \e[0m| \e[1;32mIP:\e[0m \e[1;31m dns未注册\e[0m \e[1;33m===================\e[0m"
+	    	echo -e "\n\e[1;33m===================\e[0m \e[1;32mServer:\e[0m \e[1;31m$host \e[0m| \e[1;32mIP:\e[0m \e[1;31m dns未注册\e[0m \e[1;33m===================\e[0m"
             /usr/bin/ssh $host "$2"
 	    fi
 	    
@@ -45,14 +45,14 @@ if [ "$1" == "" ] || [ "$2" == "" ];then
 else
     HostGroup=$1
     if [[ "$1" == 'all' ]];then
-	hosts=`$MysqlBin -e "select HostName from hosts where InService=1 order by HostName"| sed '1d' | xargs`
+		hosts=`$MysqlBin -e "select HostName from hosts where InService=1 order by HostName"| sed '1d' | xargs`
     else 
-	hosts=`$MysqlBin -e "select HostName from hosts where HostID in (select managehosts_id from host_group_relation where managehostgroups_id=(select GroupID from hostgroups where GroupName='$HostGroup')) and InService=1 order by HostName;" | sed '1d' | xargs`
-	if [ -z "$hosts" ];then
-	    echo "$HostGroup not exists,use list:"
-	    groups=`$MysqlBin -e "select GroupName from hostgroups"|sed '1d'`
-	    echo "$groups"
-	fi
+		hosts=`$MysqlBin -e "select HostName from hosts where HostID in (select managehosts_id from host_group_relation where managehostgroups_id=(select GroupID from hostgroups where GroupName='$HostGroup')) and InService=1 order by HostName;" | sed '1d' | xargs`
+		if [ -z "$hosts" ];then
+	    	echo "$HostGroup not exists,use list:"
+	    	groups=`$MysqlBin -e "select GroupName from hostgroups"|sed '1d'`
+	    	echo "$groups"
+		fi
     fi
     RunCMD "$hosts" "$2"
 fi
